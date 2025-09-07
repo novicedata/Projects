@@ -1,6 +1,6 @@
 # [공공/XAI] 학교안전사고 데이터 분석 및 활용 경진 대회
 
-예선 결과 : 1차 심사 통과(진행중)
+예선 결과 : 5위/참가 인원 모름
 
 ## 목차
 
@@ -24,32 +24,31 @@
   - ****
 - **주요 역할**:
   - EDA 및 전처리
-  - ML 모델링 및 Voting 도입
+  - 예측 모델링
+  - 결과 해석
 <br>
 
 ## 2️⃣ 데이터
 
 - **데이터**
-  - 주관 기관의 디스플레이 공정 데이터로 4가지 공정 단계로 이루어짐(AutoClave, Dam, Fill1, Fill2)
-  - Trian data: 40,506 rows / Test data: 17,361 rows / Features: 464 columns
-  - Imbalanced data: 38,156(Normal), 2,350(AbNormal)
-  - 이상 공개 불가
-- **도메인 지식**
-  - Dam(레진도포&반경화) -> AutoClave(탈포) -> Fill1(도포) -> Fill2(경화)
-  - 합착, 완전 경화 공정에 대한 데이터셋이 주어지지 않아 생산 과정에서 일어나는 모든 불량 유형을 예측할 수 없음.
-  - (https://youtu.be/JOuV4HuKQds?si=-Emi4eiEegSqQvWI, https://youtu.be/feNewpVvC5M?si=6nKSvJ8f6jW_CXUd)
+  - 학교안전공제중앙회 제공 데이터
+  - 2020년~2025년 안전사고 데이터
+    - 공통으로 지역, 교육청, 학교급, 사고자구분, 학년, 시간, 장소, 부위, 형태, 활동 데이터가 존재
+    - 보상 데이터는 지급된 급여의 종류와 급여액이 포함되어 있음.
+  - 보상 데이터: 245214 rows x 19 columns
+  - 사고 데이터: 689253 rows x 15 columns
 <br>
 
 ## 3️⃣ EDA 및 전처리
 
 - **요약**
-  - 한 열씩 밀린 데이터 조정
-  - 같은 unique를 갖는 열들 1개만 남기고 삭제
-  - Categoricla columns 인코딩
+  - na행 제거
+  - 불필요 feature 제거
+  - 급여 통일
  
-- **1. 밀린 열 조정**
-  - 아래와 같이 특정 feature 부터 한 열씩 밀려 데이터가 생성됨을 확인
-  - 이를 조정하는 과정에서 생기는 결측 행은 삭제 or 다수요인으로 포함
+- **1. na 행 제거**
+  - 학교안전사고 중 사고자 학년에 na 포함.
+  - 이는 교직원의 사고로, 분석 목적에 맞게
 
 ![image](https://github.com/user-attachments/assets/5e63f2ff-3d71-4c8e-b787-c517882b3f3b)
 
