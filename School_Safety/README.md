@@ -1,6 +1,6 @@
-<img width="844" height="778" alt="image" src="https://github.com/user-attachments/assets/1ec32dfa-3104-4acf-8a98-c34a6922687a" /># [공공/XAI] 학교안전사고 데이터 분석 및 활용 경진 대회
+# [공공/XAI] 학교안전사고 데이터 분석 및 활용 경진 대회
 
-예선 결과 : 5위/참가 인원 모름
+최종 결과 : 5위/참가 인원 모름
 
 ## 목차
 
