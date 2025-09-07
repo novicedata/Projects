@@ -18,5 +18,5 @@
 * 문제 정의 및 성능 지표
   * : 학교안전사고 데이터를 활용하여 예방 목적 웹툰을 제작
   * : 전체 학교 사고에 대한 일반화가 아닌 특정 주제를 활용해서 세부적 예방법을 전달하고자함
-* 최종 순위: 5위
+* 최종 순위: 5위/지원인원 모름
 * 세부 설명: [School_Safety readme](https://github.com/novicedata/Projects/tree/main/School_Safety)
