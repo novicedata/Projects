@@ -20,3 +20,13 @@
   * : 전체 학교 사고에 대한 일반화가 아닌 특정 주제를 활용해서 세부적 예방법을 전달하고자함
 * 최종 순위: 5위/지원인원 모름
 * 세부 설명: [School_Safety readme](https://github.com/novicedata/Projects/tree/main/School_Safety)
+
+
+## 📌 3. 고객 이탈 분석
+
+* 소속: 개인
+* 주최 및 후원: 개인
+* 문제 정의 및 성능 지표
+  * : 이탈 가능성 높은 고객 사전 예측
+  * : 행동 기반 지표 중심으로 이탈 유발 요인 규명 후 사전 예방하고자 함
+* 세부 설명: [Churn readme](https://github.com/novicedata/Projects/tree/main/Churn)
