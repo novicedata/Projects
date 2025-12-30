@@ -4,13 +4,13 @@
 
 ## 목차
 
-### 1️⃣ 개요
-### 2️⃣ 데이터
-### 3️⃣ EDA 및 전처리
-### 4️⃣ 시도한 것들
-### 5️⃣ 모델링
-### 6️⃣ 결과
-### 📌 정리 및 배운점
+#### 1️⃣ 개요
+#### 2️⃣ 데이터
+#### 3️⃣ EDA 및 전처리
+#### 4️⃣ 시도한 것들
+#### 5️⃣ 모델링
+#### 6️⃣ 결과
+#### 📌 정리 및 배운점
 <br>
 
 ## 1️⃣ 개요
@@ -48,25 +48,20 @@
 - **1. 밀린 열 조정**
   - 아래와 같이 특정 feature 부터 한 열씩 밀려 데이터가 생성됨을 확인
   - 이를 조정하는 과정에서 생기는 결측 행은 삭제 or 다수요인으로 포함
-
-![image](https://github.com/user-attachments/assets/5e63f2ff-3d71-4c8e-b787-c517882b3f3b)
+  - ![image](https://github.com/user-attachments/assets/5e63f2ff-3d71-4c8e-b787-c517882b3f3b)
 
 - **2. 각 feature가 설명하는 바와 범위 정리**
   - 각 feature가 뜻하는 의미를 도메인 지식 학습 후 정리
   - 연속 or 범주형, 범위, 오류항 확인
-
-
-![image](https://github.com/user-attachments/assets/a655a745-def5-4e46-b393-781047b0077d)
----
-![image](https://github.com/user-attachments/assets/948a68fe-6b60-4b0c-b3c2-faddc0f52f35)
+  - ![image](https://github.com/user-attachments/assets/a655a745-def5-4e46-b393-781047b0077d)
+  - ![image](https://github.com/user-attachments/assets/948a68fe-6b60-4b0c-b3c2-faddc0f52f35)
 
 - **3. 각 공정별 feature의 plot 및 상관 확인**
   - 확인 결과 이진형 데이터의 경우 unique별 example 개수가 같은 변수들이 있음을 확인
   - 상관을 보았을 때에도 1.00이 됨을 확인
   - 이러한 변수들은 모델링 과정에서 한개만 있으면 되기에 삭제
-
-![image](https://github.com/user-attachments/assets/3f720a80-f94b-4d6b-8753-24dc5f2435b2)
-![image](https://github.com/user-attachments/assets/bc8ab7d1-e1d1-4ddb-91fc-c95fd8a10cb0)
+  - ![image](https://github.com/user-attachments/assets/3f720a80-f94b-4d6b-8753-24dc5f2435b2)
+  - ![image](https://github.com/user-attachments/assets/bc8ab7d1-e1d1-4ddb-91fc-c95fd8a10cb0)
 
 
 ## 4️⃣ 시도한 것들
@@ -90,14 +85,13 @@
 - 불량 제품의 유통을 막는 것이 중요하기 때문에(사후 대응 비용 증가, 고객 만족도 저하) softvoting을 통해 엄격한 모델을 생성
 
 ![image](https://github.com/user-attachments/assets/ff9d12d5-5250-4349-a033-6d87c4353d18)
-
 ![image](https://github.com/user-attachments/assets/504f3dc3-3a61-46e3-92a2-844a3ba14955)
 <br>
 
 ## 6️⃣ 결과
 
 - Best Threshold: 0.836, Best F1 Score: 0.2210 (Train 기준)
-- 최종 결과
+- **최종 결과**
   - Best F1 Score: 0.215569
   - 56위/740
 <br>
