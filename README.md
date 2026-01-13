@@ -1,8 +1,11 @@
 # Projects
 
-## 📌 1. 제품 이상 여부 판별 과제
+<details>
+  <summary>  <h1>👨‍👩‍👧‍👦 Team</h1> </summary>
 
-* 소속: LG Aimers 5기 / 팀원: 5명
+## 📌 1. [LG Aimers 5th] 제품 이상 여부 판별 과제
+
+* 소속: L-Jeans / 팀원: 5명
 * 주최 및 후원: LG AI 연구원, 고용노동부, 한국경영자총협회, 대한상공회의소, 한경닷컴, 데이콘
 * 문제 정의 및 성능 지표
   * : 디스플레이 제조 공정 중 실시간 데이터를 통해 불량을 예측하고 선별하기 위함
@@ -13,7 +16,7 @@
 
 ## 📌 2. 학교안전사고 데이터 분석·활용 경진대회
 
-* 소속: 데이터 분석 / 팀: 2명
+* 탐명: 우래또록 / 팀: 2명
 * 주최 및 후원: 학교안전공제중앙회, 교육부, 행정안전부, 통계청, 전국시도교육감협의회
 * 문제 정의 및 성능 지표
   * : 학교안전사고 데이터를 활용하여 예방 목적 웹툰을 제작
@@ -21,8 +24,23 @@
 * 최종 순위: 5위/지원인원 모름
 * 세부 설명: [School_Safety readme](https://github.com/novicedata/Projects/tree/main/School_Safety)
 
+## 📌 3. [한화 미래금융인재 공모전] LIFECOMPASS: 나만의 자산 나침반 상품 설계 및 제안
 
-## 📌 3. 고객 이탈 분석
+* 팀명: 미키(미래금융인재의 Key) / 팀: 3명
+* 주최 및 후원: 한화 생명
+* 문제 정의 및 성능 지표
+  * : 기존 로보어드바이저는 사용자가 자산 배분의 이유에 대해 무지한 채 제시됨
+  * : 국면 + 개인화와 XAI 기술 도입을 통해 사용자 맞춤 포트폴리오를 이해하기 쉬운 설명과 함께 제시하고자 함
+* 최종 순위: 진행중
+* 세부 설명: [Hanwha Future Talent readme](https://github.com/novicedata/Projects/tree/main/Hanwha_Future_Talent)
+  
+</details>
+
+
+<details>
+  <summary>  <h1>🏃 Side</h1> </summary>
+
+## 📌 1. 고객 이탈 분석
 
 * 소속: 개인
 * 주최 및 후원: 개인
@@ -30,3 +48,6 @@
   * : 이탈 가능성 높은 고객 사전 예측
   * : 행동 기반 지표 중심으로 이탈 유발 요인 규명 후 사전 예방하고자 함
 * 세부 설명: [Churn readme](https://github.com/novicedata/Projects/tree/main/Churn)
+  
+</details>
+
