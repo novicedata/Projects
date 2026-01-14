@@ -4,7 +4,7 @@
 
 - [`Presentation`](https://github.com/novicedata/Projects/blob/main/Hanwha_Future_Talent/LIFECOMPASS_ppt.pdf)
 - [`Youtube`](youtube.com/watch?si=8pM3zLkZ-vtK6JnH&v=yAAWqY_RaX8&feature=youtu.be)
-- [`Quick Start`]
+- [`Quick Start`](https://github.com/novicedata/Projects/blob/main/Hanwha_Future_Talent/quick_start/quick_start.ipynb)
 - Architecture
 <p align = 'center'>
 <img width="600" height="300" alt="image" src="https://github.com/user-attachments/assets/33c0ac04-3abc-4049-84f8-cbbb167ec8d8" /> </p>
