@@ -2,8 +2,8 @@
 
 최종 결과 : 진행중
 
-- [`Presentation`]
-- [`Youtube`]
+- [`Presentation`](https://github.com/novicedata/Projects/blob/main/Hanwha_Future_Talent/LIFECOMPASS_ppt.pdf)
+- [`Youtube`](youtube.com/watch?si=8pM3zLkZ-vtK6JnH&v=yAAWqY_RaX8&feature=youtu.be)
 - [`Quick Start`]
 - Architecture
 <p align = 'center'>
