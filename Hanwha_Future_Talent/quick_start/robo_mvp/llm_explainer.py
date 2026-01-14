@@ -6,7 +6,7 @@ from dataclasses import is_dataclass, asdict
 from typing import Any, Dict, List, Optional, Tuple
 
 # mvp용 키
-GEMINI_API_KEY = "AIzaSyCeCAm63QB8s6aOs4xAO7A61vU1fSuSUM4"
+GEMINI_API_KEY = "본인 API 키"
 
 from google import genai
 
@@ -250,7 +250,7 @@ def explain_reports_with_gemini(report_user: Dict[str, Any],
                                 model: str = "gemini-2.5-flash",
                                 temperature: float = 0.4) -> str:
     if not GEMINI_API_KEY or GEMINI_API_KEY == "PUT_YOUR_GEMINI_API_KEY_HERE":
-        raise RuntimeError("llm_explainer.py의 GEMINI_API_KEY에 실제 키를 넣어줘.")
+        raise RuntimeError("llm_explainer.py의 GEMINI_API_KEY에 실제 키를 넣어주세요.")
 
     client = genai.Client(api_key=GEMINI_API_KEY)
 
