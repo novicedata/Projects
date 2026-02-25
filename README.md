@@ -48,6 +48,15 @@
   * : 이탈 가능성 높은 고객 사전 예측
   * : 행동 기반 지표 중심으로 이탈 유발 요인 규명 후 사전 예방하고자 함
 * 세부 설명: [Churn readme](https://github.com/novicedata/Projects/tree/main/Churn)
+
+## 📌 2. 인스타 계정 좋아요, 팔로워 분석
+
+* 소속: 개인
+* 주최 및 후원: 개인
+* 문제 정의 및 성능 지표
+  * : 인스타 계정의 좋아요와 팔로워의 관계는 무엇일까?
+  * : 과연 팔로워가 많으면 인플루언서 지수도 당연히 높은가??
+* 세부 설명: [Churn readme](https://github.com/novicedata/Projects/tree/main/Followers)
   
 </details>
 
