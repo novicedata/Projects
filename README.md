@@ -57,6 +57,14 @@
   * : 인스타 계정의 좋아요와 팔로워의 관계는 무엇일까?
   * : 과연 팔로워가 많으면 인플루언서 지수도 당연히 높은가??
 * 세부 설명: [Followers readme](https://github.com/novicedata/Projects/tree/main/Followers)
-  
+
+## 📌 3. BTS vs BLACKPINK youtube 조회수 분석
+
+* 소속: 개인
+* 주최 및 후원: 개인
+* 문제 정의 및 성능 지표
+  * : Youtube 기준 누가 더 글로벌 한가?
+  * : 단순한 흥미에서 시작한 분석
+* 세부 설명: [Kpop readme](https://github.com/novicedata/Projects/tree/main/Kpop)
 </details>
 
