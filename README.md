@@ -56,7 +56,7 @@
 * 문제 정의 및 성능 지표
   * : 인스타 계정의 좋아요와 팔로워의 관계는 무엇일까?
   * : 과연 팔로워가 많으면 인플루언서 지수도 당연히 높은가??
-* 세부 설명: [Churn readme](https://github.com/novicedata/Projects/tree/main/Followers)
+* 세부 설명: [Followers readme](https://github.com/novicedata/Projects/tree/main/Followers)
   
 </details>
 
