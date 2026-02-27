@@ -1,16 +1,16 @@
-# [고객데이터/분류] 고객 이탈 분석
+# [매출데이터/클러스터링, 연관성 분석] 구매 데이터 활용. 매출 상승 전략 프로젝
 
 ## 목차
 
 ### 1️⃣ 개요
 ### 2️⃣ 데이터
-### 3️⃣ 전처리
-### 4️⃣ EDA
-### 5️⃣ 클러스터링
-### 6️⃣ 프로파일
-### 7️⃣ 분류 
-### 8️⃣ 연관성 분석
-### 9️⃣ 결과
+### 3️⃣ 전처리 및 EDA
+### 4️⃣ 클러스터링
+### 5️⃣ 프로파일링
+### 6️⃣ 분류 
+### 7️⃣ 연관성 분석
+### 8️⃣ 결과
+
 
 ### 📌 결론
 ### 📌 정리 및 배운점
@@ -18,123 +18,206 @@
 
 ## 1️⃣ 개요
 
-- **문제 정의**:
-    카드사는 고객 해지를 사후 인지하고 대응하는 경우가 다수 존재, 이미 이탈 의사가 형성된 고객을 되돌리는데 한계가 존재. 
-    고객 이탈을 사전에 예측하기 위해서 해지 여부라는 결과가 아닌 카드 이용 행태 전반에서 나타나는 행동 기반 지표를 중심으로 한 분석이 필요.
-    정량적 분석을 통해 해지 이전 단계에서의 위험 고객을 식별하고 고객 유지 전략을 고도화하기 위함 <br>
+- **배경**:
+  - 오프라인 유통사에서 VVIP 고객 수가 지속적 증가
+  - VVIP 전용 서비스(라운지, 전담 응대 등) 이용 고객 급증
+    - 서비스 대기 불만 증가
+    - CS 지속 발생
+    - 서비스 관리 비용 증가
+    - 1인당 서비스 인단가 하락
+
+ - **문제 정의**
+   - 현재 VVIP 등급 기준이 적절한가?
+   - VVIP 고객은 실제로 구매 여력이 모두 소진된 상태인가?
+   - 등급 달성 이후 구매가 정체되는 현상이 존재하는가?
+  
+- **최종 문제 정의와 해결 방안**
+  - VVIP 등급 기준을 데이터 기반으로 재설계
+  - 고객 이탈 최소화 + 업셀링 매출 극대화할 수 있는 최적 기준 도출
+  - 해결 방안
+    - 구매 여력 함수 적합 -> 클러스터링 -> RF 분류 -> 기준 상향 시뮬레이션 -> 업셀링 금액 추정
   
 <br>
 
 ## 2️⃣ 데이터
 
 - **데이터**
-  - 카드사 고객 정보 데이터 (10127 rows x 21 columns)
-  - 인구 통계학 정보: 성별, 나이, 학력, 혼인 여부, 부양가족 수
-  - 카드 정보: 이탈 여부, 수입, 카드 등급, 사용 개월수, 상품 수, 고객센터 접촉 횟수 등
+  - VVIP 롱폼 데이터: 고객 ID, Date, Sales (390,330 x 3)
+    > <img width="265" height="205" alt="image" src="https://github.com/user-attachments/assets/8f47c556-4a95-4882-bf1a-4345f639cdef" />
+
+  - VVIP 구매 데이터: 고객 ID, 제품 카테고리 별 매출, 매출 합계 (4,197 x 28)
+    > <img width="848" height="145" alt="image" src="https://github.com/user-attachments/assets/4e9b20d2-b14b-4bf9-91a6-7b39c5dfb090" />
+
+  - VVIP 인구통계학 데이터: 고객 ID, 거주지, 나이 (4,197 x 3)
+    > <img width="240" height="144" alt="image" src="https://github.com/user-attachments/assets/87fca95a-6503-4817-9a8f-d5676021d4b9" />
+
+  - VVIP 연도별 매출 집계 데이터: 고객 ID, 거주지, 나이, 19년 ~ 22년 연도별 매출 총액, 19년 ~ 22년 연도별 구매 건 (4,197 x 13)
+    > <img width="846" height="175" alt="image" src="https://github.com/user-attachments/assets/a3413bfb-b65c-4e0a-947c-9547f522088b" />
+
+  - VVIP 상품 단위 거래 데이터: 고객 ID, 날짜, 물품 카테고리, Sales, Count (43,736 x 5)
+    > <img width="391" height="114" alt="image" src="https://github.com/user-attachments/assets/3e3cbbbf-0a8d-4ffa-bb2f-069f03fdaf49" />
+
 <br>
 
-## 3️⃣ EDA
+## 3️⃣ 전처리 및 EDA
 
-- **1. 잔존, 이탈 별 연속변수 기술 통계 확인**
-  - 이 중 리볼빙 잔액, 총 사용 금액, 총 거래 횟수의 차이가 비교적 크다.
-  - 시각화 결과
-    - 리볼빙 잔액 분포: 이탈 고객은 이미 리볼빙을 거의 쓰지 않는 상태. 카드 사용 자체를 중단한 뒤에 이탈함. 고잔액 고객은 오히려 이탈 가능성이 낮은 핵심 수익군
-    - 총 사용 금액 분포: 이탈 고객은 갑자기 사용하지 않는 것이 아니라 사용 강도가 낮은 상태로 지속. 고사용 고객 유지 전략과 저사용 고객 유지 전략을 다르게 접근해야함
-    - 총 거래 횟수 분포: 이탈 금액 감소보다도 빈도 감소의 패턴이 뚜렷해 보임. 생활 카드에서 안쓰는 카드로 점차 변화.
+- **누적 방문 횟수 x 누적 매출 확인**
+  - 각 고객 ID 별로 각 월 별 누적 방문 횟수와 누적 매출간의 관계를 시각화
+    - 데이터를 목적에 맞게 변형후 산점도 및 로그 회귀선 확인
+      > <img width="449" height="282" alt="image" src="https://github.com/user-attachments/assets/96e83d1f-0969-49ef-81bf-8a1ba65cdb0f" />
+      > <img width="450" height="350" alt="image" src="https://github.com/user-attachments/assets/79cb47b0-f2a4-47d8-968e-583907d2cfeb" />
 
-<img width="387" height="497" alt="image" src="https://github.com/user-attachments/assets/4b4037c0-610d-42ee-8fc3-12075c200a12" /> 
+  - 현재 가정한 VVIP 누적 매출이 1.5억. 약 1.3억 근처부터 방문 횟수에 비해 누적 매출이 늘지 않는 형태를 보이고 있음.
 
-<img width="753" height="761" alt="image" src="https://github.com/user-attachments/assets/dc3764ed-d6a5-4b73-9ad9-f188f3457fbe" />
-
-    
-- **2. 범주 별 이탈률 확인**
-  - 카드 등급이 높아질수록 이탈률이 높아짐. 프리미엄 고객이 충성도가 높다는 일반적 직관과는 반대되는 결과
-  - 실버 고객: 생활 밀착형, 프리미엄 고객: 선택권/대안이 많은 고객(불만족시 이탈 가능)
-  - 고학력일 수록 정보 탐색 능력이 높고, 조건 및 혜택 변화에 민감할 수 있음
-
-<img width="756" height="758" alt="image" src="https://github.com/user-attachments/assets/4b3f1130-4e2d-4a91-b439-76deae9ec008" />
 
 <br> 
 
-## 4️⃣ 예측 모델링
+## 4️⃣ 클러스터링
 
-- **고객 이탈 여부 분류 모델 구축**
-  - 이탈 가능성 높은 고객군 사전 식별
-  - 추후 전략적 마케팅 및 retention 활동에 적용할 수 있도록 기반 마련
- <br>
-  - Repeated(5 times) 10 fold cv를 통해 모델들의 평균 성능치 확인 후 모델 선정
-  - SHAP Value 확인 결과, EDA를 통해 보았던 3개의 연속 변수가 중요한 것으로 나타남
+- **VVIP 구매 이력 파악**
+  - 이용 고객 패턴별 클러스터링을 통해 후에 할 연관성 분석과 연결하여 클러스터별 맞춤형 전략을 세우고자 함.
+  - 총 26개의 카테고리를 대분류로 합쳐 총 12개의 카테고리로 범주화
+  - 스케일링 전 박스 플롯
+    > <img width="600" height="400" alt="image" src="https://github.com/user-attachments/assets/5d98cc20-0730-4248-a0b7-4cd3b0aef687" />
 
-<img width="550" height="717" alt="image" src="https://github.com/user-attachments/assets/42242cdc-cd0a-4560-8eca-87e44186343a" />
+  - 패턴을 더 확실하게 보기 위해 이상치 제거, Min-Max 스케일링 후 박스 플롯 확인
+    > <img width="600" height="400" alt="image" src="https://github.com/user-attachments/assets/2e57da5f-7f67-4a9e-9b49-a106ba4cf14a" />
 
-<img width="759" height="436" alt="image" src="https://github.com/user-attachments/assets/c2c8f06a-5031-4bd9-b808-edc2e1d8fd0d" />
+  - 전체적으로 명품 소비보다는 장보기/식사 및 패션 의류 관련 매출이 응집되어 있음.
+  - 리빙합의 경우 생활가전이기 때문에 매출 평균 자체가 높게 측정 된듯함
+  - 나머지는 평탄한 분포
+ 
+- **클러스터 개수 탐색 및 시행**
+  - elbow method + 실루엣 확인
+  - 실루엣 기준 클러스터 3으로 선
+    > <img width="400" height="250" alt="image" src="https://github.com/user-attachments/assets/3613b21d-d734-4311-a7d6-eb1fe9b03331" />
+    > <img width="400" height="250" alt="image" src="https://github.com/user-attachments/assets/ab02d100-f0a6-44f2-87f5-da87ea90dbbf" />
+
+  - Kmeans 활용하고 PCA를 통해 2차원 시각화
+    > <img width="500" height="350" alt="image" src="https://github.com/user-attachments/assets/39ce4677-dc26-49ea-9cd6-14049520f172" />
+
 
 <br>
 
 
-## 5️⃣ 이탈 고객군 분류 및 고객 특성 확인
+## 5️⃣ 프로파일링
 
-- 선정한 XGB 모델 기준 이탈 확률을 0.7(임의적)이상인 고객을 고위험군으로 정의하고, 전체 변수를 시각화
+- 클러스터별 카테고리 평균화한 후 시각화 하여 확인
+  > <img width="835" height="406" alt="image" src="https://github.com/user-attachments/assets/a1d5856a-5ea7-45d5-82cc-41006a88f842" />
 
-<img width="754" height="368" alt="image" src="https://github.com/user-attachments/assets/da8f005e-cb28-46a8-b12f-5bceb65230f1" />
-<img width="747" height="362" alt="image" src="https://github.com/user-attachments/assets/3fc0789d-962f-4702-b1ba-74b6b561aad0" />
-<img width="779" height="746" alt="image" src="https://github.com/user-attachments/assets/cea47e21-0c81-4f39-b076-9f1cf1dd772c" />
-<img width="740" height="335" alt="image" src="https://github.com/user-attachments/assets/7b3854fe-415d-45b5-9883-9906be10bae0" />
+- 원 스케일로는 확인하기 어려워 Min-Max 스케일링 한 값으로 확인
+  > <img width="833" height="405" alt="image" src="https://github.com/user-attachments/assets/dd7eb5ca-1902-445f-ab86-6201506f7347" />
+
+- 인구통계학 정보 포함하여 클러스터별 프로파일링 정리
+  > <img width="400" height="120" alt="image" src="https://github.com/user-attachments/assets/8c7141bb-f292-492b-92d8-5fe2d1280599" />
+  > <img width="500" height="280" alt="image" src="https://github.com/user-attachments/assets/58e7ec3c-949f-4e7e-aa31-3587dd94374c" />
+  > <img width="500" height="280" alt="image" src="https://github.com/user-attachments/assets/f118bce8-df0b-49fb-88b0-49f3298f760f" />
+  > <img width="500" height="280" alt="image" src="https://github.com/user-attachments/assets/d13f38b5-421d-493d-89ba-8381e4b04470" />
+  > <img width="500" height="280" alt="image" src="https://github.com/user-attachments/assets/5192fc69-b378-4e90-8a1c-9d72ccd085d9" />
+  > <img width="500" height="280" alt="image" src="https://github.com/user-attachments/assets/974cb76d-a11c-4a65-afc3-ecc21509fc6f" />
+  > <img width="500" height="280" alt="image" src="https://github.com/user-attachments/assets/67461389-77db-4e73-9c6c-859fb437bac0" />
+
+- 목적형(클러스터 1): 매출의 약 14%. 대부분 뷰티 악세서리를 구매하며 40대가 대부분.
+- 생활형(클러스터 2): 매출의 약 36%. 리빙과 패션 그리고 아동스포츠 등 생활에 필요한 용품 구매. 50대 이상이 과반수 포함
+- 가정형(클러스터 3): 매출의 약 50%. 클러스터 2와 소비 패턴이 유사하지만 식품류까지 구매. 가정을 책임지는 40대 이상
+
+
 <br>
 
-## 6️⃣ 결과
-- **핵심 결론 요약**
-  - 하이리스크 고객은 신용 한도나 연체 문제가 아니라, 카드를 생활 결제 수단에서 점진적으로 제거한 고객. 이탈은 갑작스러운 사건이 아니라 사용빈도, 사용률, 관계 깊이가 서서히 붕괴되는 과정으로 나타남
+## 6️⃣ 분류 
 
-- **한도는 남아 있지만 사용하지 않는 고객**
-  - Avg_Open_To_Buy는 High Risk 고객에서 더 높게 나타남
-  - Avg_Utilization_Ratio는 High Risk 고객이 0에 가까운 값에 집중
-    - 카드 사용 의지가 이미 약화된 상태로, 한도 증액보다는 사용 트리거가 필요
-  
-- **거래 횟수 감소가 가장 강력한 신호**
-  - 금액 보다 빈도 감소가 이탈의 선행 지표
-    - 월 거래 횟수 감소를 조기 경보 지표로 활용 필요
+- 클러스터 별 목표 매출 달성자를 확인하고 맞춤 캠페인 타겟을 확인
+- **해당 과정에서 FP로 인해 생기는 비용(손실)을 계산**
+  - 이를 위해 goal을 바꿔가며 "손실 vs 타겟 규모" 트레이드 오프를 확인
+    > <img width="444" height="261" alt="image" src="https://github.com/user-attachments/assets/dc72b3f7-6ce1-4830-9c80-6850a084e55f" />
 
-- **사용 추세 변화 중요**
-  - Total_Ct_Chng_Q4_Q1, Total_Amt_Chng_Q4_Q1 모두 High Risk 고객에서 감소 구간 집중
-    - 절대 사용량보다 변화율이 이탈 예측에 더 중요
+- 1.5억 ~ 2억 사이 천만원 단위로 VVIP 선정 금액을 올려가며 확인.
+  - 엑셀로 추출하여 결과 분석
+    > <img width="1060" height="620" alt="image" src="https://github.com/user-attachments/assets/3c1eefaf-dc19-4ac9-b679-7b03dfa8b93b" />
+    > <img width="869" height="381" alt="image" src="https://github.com/user-attachments/assets/75caeeb6-359a-45a5-b88c-a5dfb0b16a4b" />
 
-- **고객센터 접촉 빈도**
-  - Contacts_Count_12_mon이 High Risk 고객에서 더 큼
-    - 반복 접촉은 충성도가 아니라 불만 누적 신호
-  
-- **고객센터 접촉 빈도**
-  - Contacts_Count_12_mon이 High Risk 고객에서 더 큼
-    - 반복 접촉은 충성도가 아니라 불만 누적 신호
-  
-- **관계 깊이와 이탈**
-  - Total_Relationship_Count가 적을수록 High Risk 비중 증가
-    - 다상품 보유가 Lock in 효과를 제공
+
+- **결과적으로 1.8억 기준 관리 해야할 VVIP 고객수는 줄이면서도 기회 손실이 가장 높다.**
+
+## 7️⃣ 연관성 분석
+
+- 단순 상관을 넘어 구매 행동 패턴을 실제로 활용해보자.
+
+
+|용어|뜻|의미|
+|---|---|---|
+|지지도|전체 거래 중 해당 항목이 함께 등장한 비율|전체 중 같이 산 비율|
+|신뢰도|A를 샀을 때 B도 살 확률|A 산 사람 중 B산 사람은 얼마나?|
+|향상도|A와 B가 독립적일때 보다 얼마나 더 많이 같이 등장하는지|우연 대비 몇 배 더 많이 샀는가?|
+
+
+- 고객 id와 date를 묶어 당일 주문한 모든 카테고리를 items 칼럼으로 묶기
+  > <img width="472" height="606" alt="image" src="https://github.com/user-attachments/assets/0fab3a2f-e3f7-4675-a4c3-4b1dd08540c0" />
+
+- 원핫 인코딩 한후, Apriori를 통해 0.1% 이상 등장하는 조합만 후보로 등록
+- 전체 규칙
+  > <img width="414" height="300" alt="image" src="https://github.com/user-attachments/assets/430bf210-d3d6-49cd-8c28-14117142776b" />
+
+- lift 1.0 이상인 리빙합/뷰티악세, 패션/아동스포츠가 뽑힘. 추천 후보.
+
+- 클러스터 별로 보면
+  > <img width="476" height="426" alt="image" src="https://github.com/user-attachments/assets/16496084-8f51-41ac-aebc-452c1fe1da39" />
+
+- 각 클러스터 별로 lift 값의 차이는 있지만 조합자체는 유사하다.
+  > 매출 업셀링을 위해 리빙 제품 구매시 뷰티 악세 쿠폰 지급하는 등 지출 유도가 가능할 듯.
+
+
+## 8️⃣ 결과
+
+- **매출 정체 구간 확인**
+  - 1.3 ~ 1.5억 구간 이후 방문 대비 매출 증가율 둔화
+ 
+- **VVIP는 3개 소비 유형으로 구분 가능**
+  - 목적형/생활형/가정형으로 분리되어 소비 구조가 약간 상이함
+ 
+- **클러스터별 매출 기여도 차이 존재**
+  - 가정형이 전체 매출의 약 50%를 차지하는 핵심 집단
+
+- **기준 상향 시 고객 수 감소 + 업셀링 유지**
+  - 1.8억 기준 관리 인원은 줄고 기회손실(업셀 갭)은 최대
+ 
+- **교차 구매 패턴 존재**
+  - 리빙-뷰티, 패션-아동스포트 조합에서 lift > 1로 추천 가능성 확인
  
 <br>
 
 ## 📌 결론
 
-- Action Plan
-  - 조기경보 룰 정의
-    : 거래 횟수 QoQ -40% 이하 + Utilization < 0.15를 기준으로 한 조기 경보를 운영 KPI로 도입
+- **VVIP 기준 상향 조정 필요**
+  - 1.8억으로 변경하는 것이 운영 효율과 매출 잠재의 균형점으로 보임.
+ 
+- **FP 고객은 제거 대상이 아니라 업셀 타겟**
+  - 기회손실은 실제 매출 전환 가능성이 높은 잠재수요임
+ 
+- **클러스터 기반 차등 전략 필요**
+  - 동일선상에 놓인 VVIP가 아니라 성향별 맞춤 캠페인이 효율 적일 것
+  - 교차 구매 패턴에서 확인했듯, 리빙 제품 구매시 뷰티 제품 쿠폰 발행 등 소비 유도가 가능할 것.
 
-  - 한도 및 혜택 증가보다는 거래 빈도 회복을 목표로 한 소액 및 단기 사용 트리거 캠페인 전환
-    : 종합적으로 Retention 자원을 고위험 고객에 집중 배분하여, 거래 횟수 회복률 및 재사용 전환율 개선을 통해 LTV 증대 기대
+- **등급 재설계는 비용 절감 + 매출 확대 전략**
+  - 서비스 과밀 해소와 매출 증대 동시 달성 가능
+ 
+- **교차 구매 패턴 존재**
+  - 리빙-뷰티, 패션-아동스포트 조합에서 lift > 1로 추천 가능성 확인
 
     
 ## 📌 정리 및 배운점
 
-- **예측 정확도 보다 개입 가능한 신호를 찾는 것 중요**
-  - 예측 모델을 만드는 것은 누구나 할 수 있는 것
-  - 예측 과정에서 어떤 것이 중요했고, 왜 그렇게 결과가 나왔는지에 대한 고민을 통해 개입 가능한 부분과 전략을 짜는 것이 중요
+- **카테고리화 중요성**
+  - 목적에 맞게 카테고리 합치거나 세분화하는 과정이 분석 결과와 해석에 영향이 크다는 것을 확인
+  - 같은 데이터라도 어떻게 분류하느냐가 인사이트 깊이와 해석 정확도를 크게 달리한다는 것을 깨달음
  
-- **사용 패턴 변수와 같은 동적 변수의 중요성 인식**
-  - 후 시계열 분석을 하면 좋을 것 같은데, 동적 정보를 가진 변수들이 생각보다 많고 다양한 관점에서 분석을 바라보게 함
+- **클러스터링, 프로파일링 실무적 고려**
+  - 단순히 K-means 딱 코딩한다고 끝이 아니라, 어떤 변수 넣고 어떤 스케일링 적용하느냐가 해석력을 좌우
+  - 실무에서 사용하려면 변수 선택, 이상치 처리, 군집 수 설정 등 설계 단계가 중요할 것 같음
  
-- **확률을 이용한 세그먼트로 치환하는 과정의 필요성 인식**
-  - 확률에서 그치고 0.5를 기준으로 음과 양을 나누는 것이 아니라, 명확한(본 프로젝트에서는 임의로 0.7) 기준을 가지고 Segement 치환하여 고객간 특성 차를 확인하는 과정이 중요
+- **목적 함수 기반 시뮬레이션의 가치**
+  - 단순 분류 정확도를 보는게 아니라, 실제 KPI를 목표값으로 설정해 기준을 변화시키며 시뮬레이션 하는 방식이 실무에 더 적합할 수 있다는 점 배웠다.
  
-- **Action Item의 고민이 선행해야 분석의 방향성을 잡을 수 있음**
-  - 현재 기업 혹은 연구자가 원하는 것이 무엇인지, 어떤 Action Item이 가능하고 시장에선 문제에 대한 방안을 어떻게 잡고 있는지 선행한다면 분석에 있어서 시야가 넓어짐(여러 방면으로 생각하고 다양한 변수의 개입 가능성을 알게됨)
+- **연관성 분석을 통한 행동 패턴 이해**
+  - 단순 상관을 넘어 실제 구매 조합을 기반으로 교차 판매 전략을 도출할 수 있다는 점에서 연관규칙 분석의 활용 가치 확인.
 
