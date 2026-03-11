@@ -1,6 +1,6 @@
 # [상품 개발/Modeling] LIFECOMPASS: 나만의 자산 나침반
 
-최종 결과 : 진행중
+최종 결과 : x
 
 - [`Presentation`](https://github.com/novicedata/Projects/blob/main/Hanwha_Future_Talent/LIFECOMPASS_ppt.pdf)
 - [`Youtube`](youtube.com/watch?si=8pM3zLkZ-vtK6JnH&v=yAAWqY_RaX8&feature=youtu.be)
