@@ -31,7 +31,7 @@
 * 문제 정의 및 성능 지표
   * : 기존 로보어드바이저는 사용자가 자산 배분의 이유에 대해 무지한 채 제시됨
   * : 국면 + 개인화와 XAI 기술 도입을 통해 사용자 맞춤 포트폴리오를 이해하기 쉬운 설명과 함께 제시하고자 함
-* 최종 순위: 진행중
+* 최종 순위: x
 * 세부 설명: [Hanwha Future Talent readme](https://github.com/novicedata/Projects/tree/main/Hanwha_Future_Talent)
   
 </details>
